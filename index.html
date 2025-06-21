@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四季派对屋 | 极致Minecraft服务器体验</title>
+    <!-- 字体和图标 -->
+    <link href="https://fonts.googleapis.com/css2?family=Minecraft&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 轮播图插件 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
+    <style>
+        :root {
+            --primary: #2ECC71;
+            --primary-dark: #27AE60;
+            --secondary: #3498DB;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --accent: #E74C3C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .minecraft-font {
+            font-family: 'Minecraft', sans-serif;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 0.5rem 0;
+            background-color: rgba(44, 62, 80, 0.95);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+    	    display: flex;
+    	    justify-content: space-between;
+    	    align-items: center;
+    	    flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+	    align-items: center;
+	    margin: 0;
+	    padding: 0;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+	.nav-links a:not(.btn) {
+	    padding: 0.5rem 0; /* 给非按钮链接添加垂直内边距 */
+	}
+
+	/* 确保按钮与其他导航项对齐 */
+	.nav-links .btn {
+	    margin-left: 1.5rem;
+	    padding: 0.5rem 1rem; /* 调整按钮内边距 */
+	    line-height: 1.5; /* 确保行高一致 */
+	}
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #C0392B;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .hero-slide {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .hero-slide:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .server-ip {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .server-ip:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 关于服务器 */
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            margin: 1rem auto 0;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .about-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* 特色 */
+        .features {
+            background-color: var(--light);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2);
+            color: var(--accent);
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* 截图 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* 团队成员 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .team-member {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 5px solid var(--light);
+            transition: all 0.3s;
+        }
+        
+        .team-member:hover img {
+            transform: scale(1.1);
+            border-color: var(--primary);
+        }
+        
+        /* 联系 */
+        .contact {
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .contact .section-title {
+            color: white;
+        }
+        
+        .contact .section-title:after {
+            background: var(--primary);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links li {
+            margin: 0 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            margin-top: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--dark);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .hamburger {
+                display: block;
+                cursor: pointer;
+                z-index: 1001;
+            }
+            
+            .hamburger div {
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+                transition: all 0.3s ease;
+            }
+            
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .server-ip {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo minecraft-font">四季派对屋</div>
+                <div class="hamburger">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> 关于</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> 特色</a></li>
+                    <li><a href="#gallery"><i class="fas fa-images"></i> 截图</a></li>
+                    <li><a href="#team"><i class="fas fa-users"></i> 团队</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i> 联系</a></li>
+                    <li><a href="#" class="btn"><i class="fas fa-gamepad"></i> 立即加入</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="hero-slider">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1607513746994-51f730a44832?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1587573089734-599851b0c8b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1627855437693-dcc7b0c4ba7b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="minecraft-font">欢迎来到四季派对屋</h1>
+            <p>一个充满创意的 Minecraft 服务器</p>
+            <div class="server-ip">mc.lunchmc.top:26277</div>
+            <div>
+                <a href="javascript:void(0);" onclick="cptxt()" class="btn"><i class="fas fa-copy"></i> 复制地址</a>
+                <a href="#about" class="btn btn-accent"><i class="fas fa-chevron-down"></i> 了解更多</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于服务器 -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">关于我们的服务器</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3><i class="fas fa-globe"></i> 探索无限可能的世界</h3>
+                    <p>四季派对屋是一个专注于提供最佳Minecraft游戏体验的服务器。我们拥有稳定的硬件设施、专业的运营团队和友好的玩家社区。</p>
+                    <p>服务器运行在 1.7 - 1.21.4 版本，支持Java版游玩。我们提供生存、创造、小游戏、pvp 等多种玩法模式，满足不同玩家的需求。</p>
+                    <p>我们的目标是创造一个公平、有趣、充满创意的游戏环境，让每位玩家都能找到属于自己的乐趣。</p>
+                    <a href="#" class="btn" style="margin-top: 1rem;"><i class="fas fa-book"></i> 查看服务器规则</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1627855437693-dcc7b0c4ba7b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Minecraft服务器截图">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特色 -->
+    <section class="section features" id="features">
+        <div class="container">
+            <h2 class="section-title">服务器特色</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>高性能</h3>
+                    <p>顶级服务器24小时稳定狂飙，拒绝卡顿掉线，肝帝天堂！</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-code-branch"></i></div>
+                    <h3>版本全兼容</h3>
+                    <p>1.7-1.21.4自由穿梭，经典怀旧与前沿更新完美共存！</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3>多种玩法</h3>
+                    <p>生存、创造、空岛、RPG、小游戏等多种模式，总有一款适合您，拥有原创特色纯自写模式"天坑乱斗"！</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-gem"></i></div>
+                    <h3>定制彩蛋</h3>
+                    <p>定制彩蛋埋藏在地图各角落，找到可兑换现金福利！</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>友好社区</h3>
+                    <p>活跃的玩家社区，定期举办活动，新手友好，管理员随时为您解决问题。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-plug"></i></div>
+                    <h3>优质插件</h3>
+                    <p>精心挑选的插件系统，平衡游戏性，提供更多有趣的功能和玩法。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 截图 -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">服务器截图</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1627855437693-dcc7b0c4ba7b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="服务器截图1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1587573089734-599851b0c8b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="服务器截图2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1607513746994-51f730a44832?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="服务器截图3">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1627855437693-dcc7b0c4ba7b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="服务器截图4">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1587573089734-599851b0c8b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="服务器截图5">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1607513746994-51f730a44832?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="服务器截图6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系 -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3><i class="fas fa-server"></i> 服务器信息</h3>
+                    <p><strong><i class="fas fa-network-wired"></i> IP地址:</strong> mc.lunchmc.top:26277</p>
+                    <p><strong><i class="fas fa-code"></i> 版本:</strong> 全</p>
+                    <p><strong><i class="fas fa-clock"></i> 在线时间:</strong> 24/7</p>
+                    
+                    <h3 style="margin-top: 2rem;"><i class="fas fa-envelope"></i> 联系方式</h3>
+
+                    
+                    <div class="social-links">
+			<a href="https://qm.qq.com/q/2vzRimiucg"><i class="fab fa-qq"></i></a>
+                        <a href="https://space.bilibili.com/22491152"><i class="fab fa-bilibili"></i></a>
+                        <a href="mailto:orange@zsccodelnc.cn"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="logo minecraft-font">四季派对屋</div>
+            <ul class="footer-links">
+                <li><a href="#home"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i> 关于</a></li>
+                <li><a href="#features"><i class="fas fa-star"></i> 特色</a></li>
+                <li><a href="#gallery"><i class="fas fa-images"></i> 截图</a></li>
+                <li><a href="#team"><i class="fas fa-users"></i> 团队</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> 联系</a></li>
+                <li><a href="#"><i class="fas fa-book"></i> 规则</a></li>
+            </ul>
+            <p class="copyright">© 2025 四季派对屋 Minecraft 服务器. 保留所有权利。</p>
+            <p class="copyright">Minecraft 是 Mojang Studios 的商标，本服务器与 Mojang 无关。</p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+    <script>
+        // 复制IP地址
+        let text = "mc.lunchmc.top:26277";
+        const cptxt = async () => {
+            try {
+                await navigator.clipboard.writeText(text);
+                console.log('Content copied to clipboard');
+                alert('服务器地址已复制到剪贴板！');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                // 备用复制方法
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('服务器地址已复制到剪贴板！');
+            }
+        }
+        
+        // 轮播图初始化
+        const slider = tns({
+            container: '.hero-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayButtonOutput: false,
+            controls: false,
+            nav: false,
+            speed: 1000,
+            mode: 'gallery',
+            animateIn: 'fadeIn',
+            animateOut: 'fadeOut'
+        });
+        
+        // 滚动时导航栏效果
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // 返回顶部按钮显示/隐藏
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+        
+        // 返回顶部
+        document.getElementById('backToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('.nav-links').classList.remove('active');
+                        document.querySelector('.hamburger').classList.remove('active');
+                    }
+                }
+            });
+        });
+        
+        // 移动端菜单切换
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.section-title, .feature-card, .team-member, .gallery-item');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+</html>
